@@ -10,4 +10,11 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string name="title_personal_data">Personal Data</string>
+    <string name="title_address_data">Address Data</string>
+    <string name="title_review_data">Review Data</string>
+    <string name="submit">Submit</string>
+    <string name="register">Register</string>
+    <string name="finish">Finish</string>
 </resources>

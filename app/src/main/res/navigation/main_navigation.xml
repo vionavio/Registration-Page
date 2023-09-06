@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.viona.registrationapp.ui.register.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_personalDataFragment"
+            app:destination="@id/personalDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personalDataFragment"
+        android:name="com.viona.registrationapp.ui.personaldata.PersonalDataFragment"
+        android:label="fragment_personal_data"
+        tools:layout="@layout/fragment_personal_data">
+        <action
+            android:id="@+id/action_personalDataFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.viona.registrationapp.ui.address.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address">
+        <action
+            android:id="@+id/action_addressFragment_to_reviewDataFragment"
+            app:destination="@id/reviewDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewDataFragment"
+        android:name="com.viona.registrationapp.ui.review.ReviewDataFragment"
+        android:label="fragment_review_data"
+        tools:layout="@layout/fragment_review_data">
+        <action
+            android:id="@+id/action_reviewDataFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
