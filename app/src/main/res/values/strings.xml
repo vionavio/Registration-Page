@@ -27,4 +27,8 @@
     <string name="message_required">Required*</string>
     <string name="message_input_not_empty">Input must be not empty</string>
     <string name="input_id_card">Input must be exactly 16 characters</string>
+    <string name="desc_domicile_address">Domicile Address</string>
+    <string name="desc_house_type">House Type</string>
+    <string name="desc_no">No</string>
+    <string name="desc_province">Province</string>
 </resources>

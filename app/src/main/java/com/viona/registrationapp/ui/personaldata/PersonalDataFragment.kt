@@ -3,6 +3,7 @@ package com.viona.registrationapp.ui.personaldata
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
 import com.viona.registrationapp.databinding.FragmentPersonalDataBinding
-import com.viona.registrationapp.model.Education
+import com.viona.registrationapp.model.EducationType
 import java.util.Calendar
 
 class PersonalDataFragment : Fragment() {
@@ -70,7 +71,7 @@ class PersonalDataFragment : Fragment() {
                             tilIdCard.error = getString(R.string.message_input_not_empty)
                         }
 
-                        s.length != FIX_ID_LENGTH -> {
+                        s.length != FIX_LENGTH_ID_CARD -> {
                             tilIdCard.error = getString(R.string.input_id_card)
                         }
 
@@ -90,6 +91,10 @@ class PersonalDataFragment : Fragment() {
     private fun setupFullName(isSubmit: Boolean? = false): Boolean {
         var result = false
         binding.apply {
+            val inputFilter = InputFilter { source, _, _, _, _, _ ->
+                source.filter { !it.isDigit() }
+            }
+            tieFullname.filters = arrayOf(inputFilter)
             tilFullname.helperText = getString(R.string.message_required)
             if (isSubmit == true && tieFullname.text?.trim()?.isEmpty() == true) {
                 tilFullname.error = getString(R.string.message_input_not_empty)
@@ -148,7 +153,7 @@ class PersonalDataFragment : Fragment() {
                             tilBankAccount.error = getString(R.string.message_input_not_empty)
                         }
 
-                        s.length < 8 -> {
+                        s.length < MIN_LENGTH_BANK_ACCOUNT -> {
                             tilBankAccount.error = "Input should be at least 8 Characters"
                         }
 
@@ -173,12 +178,12 @@ class PersonalDataFragment : Fragment() {
             } else {
                 result = true
             }
-            val educationValues = Education.values().map { it.toString() }.toTypedArray()
+
             val adapter = context?.let {
                 ArrayAdapter(
                     it,
                     androidx.transition.R.layout.support_simple_spinner_dropdown_item,
-                    educationValues,
+                    EducationType.educationValues,
                 )
             }
             actEducation.setAdapter(adapter)
@@ -287,6 +292,7 @@ class PersonalDataFragment : Fragment() {
     }
 
     companion object {
-        private const val FIX_ID_LENGTH = 16
+        private const val FIX_LENGTH_ID_CARD = 16
+        private const val MIN_LENGTH_BANK_ACCOUNT = 8
     }
 }
