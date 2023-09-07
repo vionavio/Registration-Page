@@ -10,6 +10,11 @@ material = "1.9.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.1"
 navigationUiKtx = "2.7.1"
+retrofit = "2.9.0"
+retrofitConverter = "2.9.0"
+gson = "2.10.1"
+logging = "4.11.0"
+secretsGradlePlugin = "2.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -22,8 +27,14 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
+#third party android
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofitConverter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitConverter" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+secretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin"}
 

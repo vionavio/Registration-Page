@@ -40,10 +40,6 @@ class PersonalDataFragment : Fragment() {
         _binding = null
     }
 
-    private fun initView() {
-        setupSubmitData()
-    }
-
     private fun setupNationalID(isSubmit: Boolean? = false): Boolean {
         var result = false
         binding.apply {
@@ -77,7 +73,6 @@ class PersonalDataFragment : Fragment() {
 
                         else -> {
                             tilIdCard.error = null
-                            tilIdCard.helperText = null
                             result = true
                         }
                     }
@@ -117,7 +112,6 @@ class PersonalDataFragment : Fragment() {
                         tilFullname.error = getString(R.string.message_input_not_empty)
                     } else {
                         tilFullname.error = null
-                        tilFullname.helperText = null
                         result = true
                     }
                 }
@@ -159,7 +153,6 @@ class PersonalDataFragment : Fragment() {
 
                         else -> {
                             tilBankAccount.error = null
-                            tilBankAccount.helperText = null
                             result = true
                         }
                     }
@@ -174,7 +167,7 @@ class PersonalDataFragment : Fragment() {
         binding.apply {
             tilEducation.helperText = getString(R.string.message_required)
             if (isSubmit == true && actEducation.text?.trim()?.isEmpty() == true) {
-                tilEducation.error = getString(R.string.message_input_not_empty)
+                tilEducation.error = getString(R.string.message_select)
             } else {
                 result = true
             }
@@ -202,11 +195,10 @@ class PersonalDataFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable?) {
                     if (s.isNullOrEmpty()) {
-                        tilEducation.error = getString(R.string.message_input_not_empty)
+                        tilEducation.error = getString(R.string.message_select)
                         result = false
                     } else {
                         tilEducation.error = null
-                        tilEducation.helperText = null
                         result = true
                     }
                 }
@@ -259,7 +251,6 @@ class PersonalDataFragment : Fragment() {
                         result = false
                     } else {
                         tilDob.error = null
-                        tilDob.helperText = null
                         result = true
                     }
                 }
@@ -269,7 +260,7 @@ class PersonalDataFragment : Fragment() {
         return result
     }
 
-    private fun setupSubmitData() = with(binding) {
+    private fun initView() = with(binding) {
         setupNationalID()
         setupFullName()
         setupBankAccountNo()

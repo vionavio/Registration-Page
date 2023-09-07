@@ -26,6 +26,7 @@
     <string name="message_select_date_of_birth">Please select date of birth</string>
     <string name="message_required">Required*</string>
     <string name="message_input_not_empty">Input must be not empty</string>
+    <string name="message_select">Select the option</string>
     <string name="input_id_card">Input must be exactly 16 characters</string>
     <string name="desc_domicile_address">Domicile Address</string>
     <string name="desc_house_type">House Type</string>

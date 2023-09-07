@@ -7,17 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
 import com.viona.registrationapp.databinding.FragmentAddressBinding
 import com.viona.registrationapp.model.HouseType
+import com.viona.registrationapp.util.observableData
 
 class AddressFragment : Fragment() {
     private var _binding: FragmentAddressBinding? = null
     private val binding get() = _binding!!
+    private lateinit var addressViewModel: AddressViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +32,22 @@ class AddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
         initView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initData() {
+        addressViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory(),
+        )[AddressViewModel::class.java]
+
+        addressViewModel.getProvinceData()
     }
 
     private fun initView() = with(binding) {
@@ -48,6 +60,7 @@ class AddressFragment : Fragment() {
                 !setupAddress(true) -> setupAddress(true)
                 !setupHouseType(true) -> setupHouseType(true)
                 !setupNoAddress(true) -> setupNoAddress(true)
+                !setupProvince(true) -> setupProvince(true)
                 else -> {
                     this@AddressFragment.findNavController().navigate(
                         R.id.action_addressFragment_to_reviewDataFragment,
@@ -86,7 +99,6 @@ class AddressFragment : Fragment() {
 
                         else -> {
                             tilDomicile.error = null
-                            tilDomicile.helperText = null
                             result = true
                         }
                     }
@@ -102,7 +114,7 @@ class AddressFragment : Fragment() {
         binding.apply {
             tilHouseType.helperText = getString(R.string.message_required)
             if (isSubmit == true && actHouseType.text?.trim()?.isEmpty() == true) {
-                tilHouseType.error = getString(R.string.message_input_not_empty)
+                tilHouseType.error = getString(R.string.message_select)
             } else {
                 result = true
             }
@@ -130,11 +142,10 @@ class AddressFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable?) {
                     if (s.isNullOrEmpty()) {
-                        tilHouseType.error = getString(R.string.message_input_not_empty)
+                        tilHouseType.error = getString(R.string.message_select)
                         result = false
                     } else {
                         tilHouseType.error = null
-                        tilHouseType.helperText = null
                         result = true
                     }
                 }
@@ -171,7 +182,6 @@ class AddressFragment : Fragment() {
                         result = false
                     } else {
                         tilNo.error = null
-                        tilNo.helperText = null
                         result = true
                     }
                 }
@@ -181,7 +191,55 @@ class AddressFragment : Fragment() {
         return result
     }
 
-    private fun setupProvince(): Boolean {
-        return true
+    private fun setupProvince(isSubmit: Boolean? = false): Boolean {
+        var result = false
+        binding.apply {
+            tilProvince.helperText = getString(R.string.message_required)
+            if (isSubmit == true && actProvince.text?.trim()?.isEmpty() == true) {
+                tilProvince.error = getString(R.string.message_select)
+            } else {
+                result = true
+            }
+
+            addressViewModel.province.observableData(this@AddressFragment) { result ->
+                val data = result.data?.map {
+                    it?.name.orEmpty()
+                }?.toTypedArray().orEmpty()
+
+                val adapter = context?.let {
+                    ArrayAdapter(
+                        it,
+                        androidx.transition.R.layout.support_simple_spinner_dropdown_item,
+                        data,
+                    )
+                }
+                actProvince.setAdapter(adapter)
+            }
+
+            tilProvince.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
+
+            actProvince.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) = Unit
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
+                    Unit
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (s.isNullOrEmpty()) {
+                        tilProvince.error = getString(R.string.message_select)
+                        result = false
+                    } else {
+                        tilProvince.error = null
+                        result = true
+                    }
+                }
+            })
+        }
+        return result
     }
 }
