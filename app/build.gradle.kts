@@ -53,6 +53,10 @@ dependencies {
     implementation(libs.retrofitConverter)
     implementation(libs.gson)
     implementation(libs.logging)
+    implementation(libs.kotlinCoroutines)
+    implementation(libs.kotlinCoroutinesAndroid)
+    implementation(libs.lifecycle)
+    implementation(libs.lifecycleLiveData)
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.test.ext.junit)

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
+import com.viona.registrationapp.core.ui.ViewModelFactory
 import com.viona.registrationapp.databinding.FragmentAddressBinding
 import com.viona.registrationapp.model.HouseType
 import com.viona.registrationapp.util.observableData
@@ -19,7 +20,7 @@ import com.viona.registrationapp.util.observableData
 class AddressFragment : Fragment() {
     private var _binding: FragmentAddressBinding? = null
     private val binding get() = _binding!!
-    private lateinit var addressViewModel: AddressViewModel
+    private lateinit var viewModel: AddressViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,12 +43,9 @@ class AddressFragment : Fragment() {
     }
 
     private fun initData() {
-        addressViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory(),
-        )[AddressViewModel::class.java]
-
-        addressViewModel.getProvinceData()
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[AddressViewModel::class.java]
+        viewModel.getProvinceData()
     }
 
     private fun initView() = with(binding) {
@@ -201,10 +199,10 @@ class AddressFragment : Fragment() {
                 result = true
             }
 
-            addressViewModel.province.observableData(this@AddressFragment) { result ->
-                val data = result.data?.map {
-                    it?.name.orEmpty()
-                }?.toTypedArray().orEmpty()
+            viewModel.provinceData.observableData(this@AddressFragment) { result ->
+                val data = result.map {
+                    it.name.orEmpty()
+                }.toTypedArray()
 
                 val adapter = context?.let {
                     ArrayAdapter(

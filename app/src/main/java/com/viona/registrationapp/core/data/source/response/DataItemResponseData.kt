@@ -1,4 +1,4 @@
-package com.viona.registrationapp.model.response
+package com.viona.registrationapp.core.data.source.response
 
 import com.google.gson.annotations.SerializedName
 

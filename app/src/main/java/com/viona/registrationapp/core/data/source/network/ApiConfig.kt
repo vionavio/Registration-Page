@@ -1,4 +1,4 @@
-package com.viona.registrationapp.service
+package com.viona.registrationapp.core.data.source.network
 
 import com.viona.registrationapp.BuildConfig
 import com.viona.registrationapp.util.retrofit
@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
 
-object NetworkClient {
+object ApiConfig {
     private val authInterceptor = Interceptor { chain ->
         val request = chain.request()
         val requestApiKey = request.url.newBuilder()
