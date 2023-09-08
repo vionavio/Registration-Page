@@ -1,4 +1,4 @@
-package com.viona.registrationapp.model
+package com.viona.registrationapp.core.domain.model.type
 
 enum class HouseType {
     RUMAH,

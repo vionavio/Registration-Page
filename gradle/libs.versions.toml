@@ -42,4 +42,5 @@ kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 secretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin"}
+kotlinParcelable = { id = "org.jetbrains.kotlin.plugin.parcelize", version = "1.9.10" }
 

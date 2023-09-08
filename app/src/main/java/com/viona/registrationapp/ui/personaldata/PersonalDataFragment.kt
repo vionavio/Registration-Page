@@ -10,16 +10,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
+import com.viona.registrationapp.core.domain.model.param.RegisterParam
+import com.viona.registrationapp.core.domain.model.type.EducationType
 import com.viona.registrationapp.databinding.FragmentPersonalDataBinding
-import com.viona.registrationapp.model.EducationType
+import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
+import com.viona.registrationapp.util.Constants.FIX_LENGTH_ID_CARD
+import com.viona.registrationapp.util.Constants.MIN_LENGTH_BANK_ACCOUNT
+import com.viona.registrationapp.util.showSnackbar
 import java.util.Calendar
 
 class PersonalDataFragment : Fragment() {
     private var _binding: FragmentPersonalDataBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: PersonalDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +40,7 @@ class PersonalDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
         initView()
     }
 
@@ -40,12 +49,21 @@ class PersonalDataFragment : Fragment() {
         _binding = null
     }
 
+    private fun initData() {
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory(),
+        )[PersonalDataViewModel::class.java]
+    }
+
     private fun setupNationalID(isSubmit: Boolean? = false): Boolean {
         var result = false
+        var message = ""
         binding.apply {
             tilIdCard.helperText = getString(R.string.message_required)
             if (isSubmit == true && tieIdCard.text?.trim()?.isEmpty() == true) {
                 tilIdCard.error = getString(R.string.message_input_not_empty)
+                message = getString(R.string.message_input_not_empty)
             } else {
                 result = true
             }
@@ -65,19 +83,25 @@ class PersonalDataFragment : Fragment() {
                     when {
                         s.isNullOrEmpty() -> {
                             tilIdCard.error = getString(R.string.message_input_not_empty)
+                            message = getString(R.string.message_input_not_empty)
                         }
 
                         s.length != FIX_LENGTH_ID_CARD -> {
                             tilIdCard.error = getString(R.string.input_id_card)
+                            message = getString(R.string.input_id_card)
                         }
 
                         else -> {
+                            message = ""
                             tilIdCard.error = null
                             result = true
                         }
                     }
                 }
             })
+        }
+        if (isSubmit == true && message.isNotEmpty()) {
+            view?.showSnackbar(message)
         }
 
         return result
@@ -274,16 +298,24 @@ class PersonalDataFragment : Fragment() {
                 !setupEducation(true) -> setupEducation(true)
                 !setupDateOfBirth(true) -> setupDateOfBirth(true)
                 else -> {
-                    this@PersonalDataFragment.findNavController().navigate(
+                    val param = RegisterParam(
+                        nationalId = tieIdCard.text.toString(),
+                        fullname = tieFullname.text.toString(),
+                        bankAccountNo = tieAccountNo.text.toString(),
+                        education = actEducation.text.toString(),
+                        dob = tieDob.text.toString(),
+                    )
+                    viewModel.setPersonalData(param)
+
+                    val bundle = Bundle().apply {
+                        putParcelable(EXTRA_REGISTER_PARAM, viewModel.dataParam)
+                    }
+                    it.findNavController().navigate(
                         R.id.action_personalDataFragment_to_addressFragment,
+                        bundle,
                     )
                 }
             }
         }
-    }
-
-    companion object {
-        private const val FIX_LENGTH_ID_CARD = 16
-        private const val MIN_LENGTH_BANK_ACCOUNT = 8
     }
 }

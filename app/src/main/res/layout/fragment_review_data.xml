@@ -4,7 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/spacing_20"
     tools:context=".ui.review.ReviewDataFragment">
+
+    <TextView
+        android:id="@+id/tv_national_id"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_id_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_fullname"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_national_id" />
+
+    <TextView
+        android:id="@+id/tv_account_no"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_bank_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_fullname" />
+
+    <TextView
+        android:id="@+id/tv_education"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_education"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_account_no" />
+
+    <TextView
+        android:id="@+id/tv_dob"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_calendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_education" />
+
+    <TextView
+        android:id="@+id/tv_housing_type"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dob" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        style="@style/CustomTextViewStyle"
+        app:drawableStartCompat="@drawable/ic_home_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_housing_type" />
 
     <Button
         android:id="@+id/btn_finish"
@@ -15,5 +72,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

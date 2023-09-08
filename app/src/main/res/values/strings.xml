@@ -32,4 +32,12 @@
     <string name="desc_house_type">House Type</string>
     <string name="desc_no">No</string>
     <string name="desc_province">Province</string>
+
+    <string name="text_id_card">National ID :  %s</string>
+    <string name="text_fullname">Full Name :  %s</string>
+    <string name="text_account_no">Bank Account No :  %s</string>
+    <string name="text_education">Education :  %s</string>
+    <string name="text_dob">Date of Birth :  %s</string>
+    <string name="text_home_type">Home Type :  %s</string>
+    <string name="text_address">Address :  %s</string>
 </resources>

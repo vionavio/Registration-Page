@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/spacing_48</item>
+        <item name="android:layout_marginTop">@dimen/spacing_8</item>
+        <item name="android:background">@drawable/bg_box</item>
+        <item name="android:drawablePadding">@dimen/spacing_8</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/spacing_8</item>
+        <item name="android:paddingEnd">@dimen/spacing_8</item>
+    </style>
+</resources>
+

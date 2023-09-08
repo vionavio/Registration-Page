@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.viona.registrationapp.core.data.Resource
 import com.viona.registrationapp.core.domain.model.Province
+import com.viona.registrationapp.core.domain.model.param.RegisterParam
 import com.viona.registrationapp.core.domain.usecase.ProvinceUseCase
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AddressViewModel(private val provinceUseCase: ProvinceUseCase) : ViewModel() {
+
     private val _provinceData: MutableLiveData<List<Province>> = MutableLiveData()
     val provinceData: LiveData<List<Province>> get() = _provinceData
 
+    private var _dataParam: RegisterParam? = null
+    val dataParam: RegisterParam get() = _dataParam!!
     fun getProvinceData() = viewModelScope.launch {
         provinceUseCase.getProvince().collect { resource ->
             when (resource) {
@@ -24,5 +27,11 @@ class AddressViewModel(private val provinceUseCase: ProvinceUseCase) : ViewModel
                 else -> {}
             }
         }
+    }
+
+    fun setPersonalData(
+        param: RegisterParam,
+    ) {
+        _dataParam = param
     }
 }

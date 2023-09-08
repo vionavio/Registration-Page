@@ -12,15 +12,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
+import com.viona.registrationapp.core.domain.model.param.RegisterParam
+import com.viona.registrationapp.core.domain.model.type.HouseType
 import com.viona.registrationapp.core.ui.ViewModelFactory
 import com.viona.registrationapp.databinding.FragmentAddressBinding
-import com.viona.registrationapp.model.HouseType
+import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
 import com.viona.registrationapp.util.observableData
 
 class AddressFragment : Fragment() {
     private var _binding: FragmentAddressBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AddressViewModel
+
+    private val registerParam by lazy { arguments?.getParcelable(EXTRA_REGISTER_PARAM) as? RegisterParam }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,8 +64,25 @@ class AddressFragment : Fragment() {
                 !setupNoAddress(true) -> setupNoAddress(true)
                 !setupProvince(true) -> setupProvince(true)
                 else -> {
+                    val param = RegisterParam(
+                        nationalId = registerParam?.nationalId,
+                        fullname = registerParam?.fullname,
+                        bankAccountNo = registerParam?.bankAccountNo,
+                        education = registerParam?.education,
+                        dob = registerParam?.dob,
+                        domicile = tieDomicile.text.toString(),
+                        housingType = actHouseType.text.toString(),
+                        houseNo = tieNo.text.toString(),
+                        province = actProvince.text.toString(),
+                    )
+                    viewModel.setPersonalData(param)
+                    val bundle = Bundle().apply {
+                        putParcelable(EXTRA_REGISTER_PARAM, viewModel.dataParam)
+                    }
+
                     this@AddressFragment.findNavController().navigate(
                         R.id.action_addressFragment_to_reviewDataFragment,
+                        bundle,
                     )
                 }
             }
