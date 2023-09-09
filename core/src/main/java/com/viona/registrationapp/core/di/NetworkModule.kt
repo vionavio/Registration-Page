@@ -1,8 +1,8 @@
 package com.viona.registrationapp.core.di
 
-import com.viona.registrationapp.BuildConfig
+import com.viona.registrationapp.core.BuildConfig
 import com.viona.registrationapp.core.data.source.network.ApiService
-import com.viona.registrationapp.util.retrofit
+import com.viona.registrationapp.core.utils.retrofit
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -33,7 +33,7 @@ class NetworkModule {
         .addInterceptor(logging)
         .build()
 
-    private val retrofit = retrofit {
+    private val retrofitData = retrofit {
         baseUrl("https://api.goapi.id/v1/")
         addConverterFactory(GsonConverterFactory.create())
         client(client)
@@ -42,6 +42,6 @@ class NetworkModule {
 
     @Provides
     fun provideApiService(): ApiService {
-        return retrofit.create(ApiService::class.java)
+        return retrofitData.create(ApiService::class.java)
     }
 }

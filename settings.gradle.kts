@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RegistrationApp"
 include(":app")
- 
+include(":core")

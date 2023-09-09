@@ -20,6 +20,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
             tools:text="Registration Page" />
     </androidx.appcompat.widget.Toolbar>
 

@@ -2,8 +2,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.secretsGradlePlugin)
-    alias(libs.plugins.kotlinParcelable)
     kotlin("kapt") version "1.6.10"
 }
 
@@ -44,18 +42,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
 
-    implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.retrofit)
-    implementation(libs.retrofitConverter)
-    implementation(libs.gson)
-    implementation(libs.logging)
-    implementation(libs.kotlinCoroutines)
     implementation(libs.kotlinCoroutinesAndroid)
     implementation(libs.lifecycle)
     implementation(libs.lifecycleLiveData)

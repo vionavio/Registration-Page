@@ -15,8 +15,8 @@ import com.viona.registrationapp.MyApplication
 import com.viona.registrationapp.R
 import com.viona.registrationapp.core.domain.model.param.RegisterParam
 import com.viona.registrationapp.core.domain.model.type.HouseType
-import com.viona.registrationapp.core.ui.ViewModelFactory
 import com.viona.registrationapp.databinding.FragmentAddressBinding
+import com.viona.registrationapp.ui.ViewModelFactory
 import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
 import com.viona.registrationapp.util.addAfterTextChangedListener
 import com.viona.registrationapp.util.observableData

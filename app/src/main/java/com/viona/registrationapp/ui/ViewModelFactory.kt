@@ -1,4 +1,4 @@
-package com.viona.registrationapp.core.ui
+package com.viona.registrationapp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

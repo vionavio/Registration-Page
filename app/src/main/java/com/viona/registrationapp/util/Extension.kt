@@ -7,7 +7,6 @@ import android.widget.EditText
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Retrofit
 
 fun View.setVisible() {
     this.visibility = View.VISIBLE
@@ -61,9 +60,3 @@ fun <T> LiveData<T>.observableData(
 
 fun Boolean?.orFalse() = this ?: false
 
-// retrofit builder
-inline fun retrofit(init: Retrofit.Builder.() -> Unit): Retrofit {
-    val retrofit = Retrofit.Builder()
-    retrofit.init()
-    return retrofit.build()
-}
