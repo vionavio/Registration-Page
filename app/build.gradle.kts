@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.secretsGradlePlugin)
     alias(libs.plugins.kotlinParcelable)
+    kotlin("kapt") version "1.6.10"
 }
 
 android {
@@ -58,8 +59,12 @@ dependencies {
     implementation(libs.kotlinCoroutinesAndroid)
     implementation(libs.lifecycle)
     implementation(libs.lifecycleLiveData)
+    implementation(libs.dagger)
+    kapt(libs.daggerCompiler)
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+
+

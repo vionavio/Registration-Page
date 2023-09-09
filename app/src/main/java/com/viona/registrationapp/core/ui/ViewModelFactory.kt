@@ -2,11 +2,13 @@ package com.viona.registrationapp.core.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.viona.registrationapp.core.di.Injection
 import com.viona.registrationapp.core.domain.usecase.ProvinceUseCase
+import com.viona.registrationapp.di.AppScope
 import com.viona.registrationapp.ui.address.AddressViewModel
+import javax.inject.Inject
 
-class ViewModelFactory private constructor(
+@AppScope
+class ViewModelFactory @Inject constructor(
     private val provinceUseCase: ProvinceUseCase,
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -19,16 +21,4 @@ class ViewModelFactory private constructor(
 
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
-
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(
-                    Injection.provideProvinceUseCase(),
-                )
-            }
-    }
 }

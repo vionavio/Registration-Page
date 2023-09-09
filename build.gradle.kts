@@ -5,5 +5,6 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.secretsGradlePlugin) apply false
     alias(libs.plugins.kotlinParcelable) apply false
+    kotlin("kapt") version "1.6.10"
 }
 true // Needed to make the Suppress annotation work for the plugins block

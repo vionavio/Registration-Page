@@ -7,8 +7,11 @@ import com.viona.registrationapp.core.domain.model.Province
 import com.viona.registrationapp.core.domain.repository.ProvinceRepository
 import com.viona.registrationapp.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProvinceRepositoryImpl private constructor(
+@Singleton
+class ProvinceRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
 ) : ProvinceRepository {
     override fun getProvince(): Flow<Resource<List<Province>>> =
@@ -21,16 +24,4 @@ class ProvinceRepositoryImpl private constructor(
                 return remoteDataSource.getProvinceData()
             }
         }.asFlow()
-
-    companion object {
-        @Volatile
-        private var instance: ProvinceRepositoryImpl? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-        ): ProvinceRepositoryImpl =
-            instance ?: synchronized(this) {
-                instance ?: ProvinceRepositoryImpl(remoteData)
-            }
-    }
 }

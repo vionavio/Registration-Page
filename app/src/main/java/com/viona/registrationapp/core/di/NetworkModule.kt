@@ -1,13 +1,18 @@
-package com.viona.registrationapp.core.data.source.network
+package com.viona.registrationapp.core.di
 
 import com.viona.registrationapp.BuildConfig
+import com.viona.registrationapp.core.data.source.network.ApiService
 import com.viona.registrationapp.util.retrofit
+import dagger.Module
+import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiConfig {
+@Module
+class NetworkModule {
+
     private val authInterceptor = Interceptor { chain ->
         val request = chain.request()
         val requestApiKey = request.url.newBuilder()
@@ -35,8 +40,8 @@ object ApiConfig {
         build()
     }
 
-    val apiService by lazy {
-        val create: ApiService = retrofit.create(ApiService::class.java)
-        create
+    @Provides
+    fun provideApiService(): ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 }

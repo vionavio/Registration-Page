@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
@@ -27,7 +27,7 @@ class PersonalDataFragment : Fragment() {
     private var _binding: FragmentPersonalDataBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: PersonalDataViewModel
+    private val viewModel: PersonalDataViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,20 +40,12 @@ class PersonalDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initData()
         initView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun initData() {
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory(),
-        )[PersonalDataViewModel::class.java]
     }
 
     private fun setupNationalID(isSubmit: Boolean? = false): Boolean {

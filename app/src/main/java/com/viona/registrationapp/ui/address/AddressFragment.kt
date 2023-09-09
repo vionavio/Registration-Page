@@ -1,5 +1,6 @@
 package com.viona.registrationapp.ui.address
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,9 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
+import com.viona.registrationapp.MyApplication
 import com.viona.registrationapp.R
 import com.viona.registrationapp.core.domain.model.param.RegisterParam
 import com.viona.registrationapp.core.domain.model.type.HouseType
@@ -18,13 +20,23 @@ import com.viona.registrationapp.core.ui.ViewModelFactory
 import com.viona.registrationapp.databinding.FragmentAddressBinding
 import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
 import com.viona.registrationapp.util.observableData
+import javax.inject.Inject
 
 class AddressFragment : Fragment() {
     private var _binding: FragmentAddressBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AddressViewModel
+
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: AddressViewModel by viewModels { factory }
 
     private val registerParam by lazy { arguments?.getParcelable(EXTRA_REGISTER_PARAM) as? RegisterParam }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +59,6 @@ class AddressFragment : Fragment() {
     }
 
     private fun initData() {
-        val factory = ViewModelFactory.getInstance()
-        viewModel = ViewModelProvider(this, factory)[AddressViewModel::class.java]
         viewModel.getProvinceData()
     }
 

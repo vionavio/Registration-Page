@@ -17,6 +17,7 @@ logging = "4.11.0"
 secretsGradlePlugin = "2.0.1"
 kotlinCoroutines = "1.7.3"
 lifecycle = "2.6.2"
+dagger = "2.48"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,10 +38,13 @@ logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", versio
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlinCoroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinCoroutines"}
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines"}
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+daggerCompiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 secretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin"}
 kotlinParcelable = { id = "org.jetbrains.kotlin.plugin.parcelize", version = "1.9.10" }
+
 
