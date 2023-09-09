@@ -1,6 +1,9 @@
 package com.viona.registrationapp.util
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
@@ -34,6 +37,18 @@ fun View.showSnackbar(
     snackbar.show()
 }
 
+fun EditText.addAfterTextChangedListener(afterTextChangedAction: (Editable?) -> Unit) {
+    addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+        override fun afterTextChanged(s: Editable?) {
+            afterTextChangedAction(s)
+        }
+    })
+}
+
 // Live Data
 fun <T> LiveData<T>.observableData(
     owner: LifecycleOwner,
@@ -43,6 +58,8 @@ fun <T> LiveData<T>.observableData(
         action.invoke(data)
     }
 }
+
+fun Boolean?.orFalse() = this ?: false
 
 // retrofit builder
 inline fun retrofit(init: Retrofit.Builder.() -> Unit): Retrofit {

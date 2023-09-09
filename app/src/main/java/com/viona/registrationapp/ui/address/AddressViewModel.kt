@@ -15,8 +15,8 @@ class AddressViewModel(private val provinceUseCase: ProvinceUseCase) : ViewModel
     private val _provinceData: MutableLiveData<List<Province>> = MutableLiveData()
     val provinceData: LiveData<List<Province>> get() = _provinceData
 
-    private var _dataParam: RegisterParam? = null
-    val dataParam: RegisterParam get() = _dataParam!!
+    private var _dataParam = RegisterParam()
+    val dataParam: RegisterParam get() = _dataParam
     fun getProvinceData() = viewModelScope.launch {
         provinceUseCase.getProvince().collect { resource ->
             when (resource) {

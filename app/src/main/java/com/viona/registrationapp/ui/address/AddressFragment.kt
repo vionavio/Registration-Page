@@ -2,8 +2,6 @@ package com.viona.registrationapp.ui.address
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.MyApplication
 import com.viona.registrationapp.R
@@ -19,7 +18,9 @@ import com.viona.registrationapp.core.domain.model.type.HouseType
 import com.viona.registrationapp.core.ui.ViewModelFactory
 import com.viona.registrationapp.databinding.FragmentAddressBinding
 import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
+import com.viona.registrationapp.util.addAfterTextChangedListener
 import com.viona.registrationapp.util.observableData
+import com.viona.registrationapp.util.showSnackbar
 import javax.inject.Inject
 
 class AddressFragment : Fragment() {
@@ -100,54 +101,30 @@ class AddressFragment : Fragment() {
     }
 
     private fun setupAddress(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
         binding.apply {
-            tilDomicile.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieDomicile.text?.trim()?.isEmpty() == true) {
-                tilDomicile.error = getString(R.string.message_input_not_empty)
-            } else {
-                result = true
-            }
+            result = onSubmitData(tilDomicile, tieDomicile.text.toString(), isSubmit)
+            tieDomicile.addAfterTextChangedListener { text ->
+                when {
+                    text.isNullOrEmpty() -> {
+                        tieDomicile.error = validationEmptyMessage
+                    }
 
-            tieDomicile.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    when {
-                        s.isNullOrEmpty() -> {
-                            tieDomicile.error = getString(R.string.message_input_not_empty)
-                        }
-
-                        else -> {
-                            tilDomicile.error = null
-                            result = true
-                        }
+                    else -> {
+                        tilDomicile.error = null
+                        result = true
                     }
                 }
-            })
+            }
         }
 
         return result
     }
 
     private fun setupHouseType(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
         binding.apply {
-            tilHouseType.helperText = getString(R.string.message_required)
-            if (isSubmit == true && actHouseType.text?.trim()?.isEmpty() == true) {
-                tilHouseType.error = getString(R.string.message_select)
-            } else {
-                result = true
-            }
-
+            result = onSubmitData(tilHouseType, actHouseType.text?.trim().toString(), isSubmit)
             val adapter = context?.let {
                 ArrayAdapter(
                     it,
@@ -158,117 +135,84 @@ class AddressFragment : Fragment() {
             actHouseType.setAdapter(adapter)
             tilHouseType.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
 
-            actHouseType.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilHouseType.error = getString(R.string.message_select)
-                        result = false
-                    } else {
-                        tilHouseType.error = null
-                        result = true
-                    }
+            actHouseType.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilHouseType.error = getString(R.string.message_select)
+                    result = false
+                } else {
+                    tilHouseType.error = null
+                    result = true
                 }
-            })
+            }
         }
 
         return result
     }
 
     private fun setupNoAddress(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
         binding.apply {
-            tilNo.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieNo.text?.trim()?.isEmpty() == true) {
-                tilNo.error = getString(R.string.message_input_not_empty)
-            } else {
-                result = true
-            }
-
-            tieNo.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilNo.error = getString(R.string.message_input_not_empty)
-                        result = false
-                    } else {
-                        tilNo.error = null
-                        result = true
-                    }
+            result = onSubmitData(tilNo, tieNo.text?.trim().toString(), isSubmit)
+            tieNo.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilNo.error = validationEmptyMessage
+                    result = false
+                } else {
+                    tilNo.error = null
+                    result = true
                 }
-            })
+            }
         }
 
         return result
     }
 
     private fun setupProvince(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
         binding.apply {
-            tilProvince.helperText = getString(R.string.message_required)
-            if (isSubmit == true && actProvince.text?.trim()?.isEmpty() == true) {
-                tilProvince.error = getString(R.string.message_select)
-            } else {
-                result = true
-            }
+            result = onSubmitData(tilProvince, actProvince.text?.trim().toString(), isSubmit)
 
             viewModel.provinceData.observableData(this@AddressFragment) { result ->
                 val data = result.map {
                     it.name.orEmpty()
                 }.toTypedArray()
-
-                val adapter = context?.let {
-                    ArrayAdapter(
-                        it,
-                        androidx.transition.R.layout.support_simple_spinner_dropdown_item,
-                        data,
-                    )
+                actProvince.setOnClickListener {
+                    context?.let {
+                        MaterialAlertDialogBuilder(it)
+                            .setTitle(getString(R.string.desc_province))
+                            .setItems(data) { _, which ->
+                                actProvince.setText(data[which])
+                            }
+                            .show()
+                    }
                 }
-                actProvince.setAdapter(adapter)
             }
 
             tilProvince.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
 
-            actProvince.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilProvince.error = getString(R.string.message_select)
-                        result = false
-                    } else {
-                        tilProvince.error = null
-                        result = true
-                    }
+            actProvince.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilProvince.error = getString(R.string.message_select)
+                    result = false
+                } else {
+                    tilProvince.error = null
+                    result = true
                 }
-            })
+            }
         }
         return result
     }
+
+    private fun onSubmitData(layout: TextInputLayout, text: String, isSubmit: Boolean?): Boolean {
+        layout.helperText = getString(R.string.message_required)
+        if (isSubmit == true && text.isEmpty()) {
+            layout.error = validationEmptyMessage
+            view?.showSnackbar(getString(R.string.message_empty))
+            return false
+        }
+
+        return true
+    }
+
+    private val validationEmptyMessage get(): String = getString(R.string.message_input_not_empty)
 }

@@ -14,24 +14,31 @@
     <string name="title_personal_data">Personal Data</string>
     <string name="title_address_data">Address Data</string>
     <string name="title_review_data">Review Data</string>
+
     <string name="submit">Submit</string>
     <string name="register">Register</string>
     <string name="finish">Finish</string>
+
     <string name="desc_bank_account_no">Bank Account No</string>
     <string name="desc_full_name">Full Name</string>
     <string name="desc_national_id">National ID</string>
     <string name="desc_education">Education</string>
     <string name="desc_date_of_birth">Date of Birth</string>
-    <string name="message_select_education">Please select education</string>
-    <string name="message_select_date_of_birth">Please select date of birth</string>
-    <string name="message_required">Required*</string>
-    <string name="message_input_not_empty">Input must be not empty</string>
-    <string name="message_select">Select the option</string>
-    <string name="input_id_card">Input must be exactly 16 characters</string>
     <string name="desc_domicile_address">Domicile Address</string>
     <string name="desc_house_type">House Type</string>
     <string name="desc_no">No</string>
     <string name="desc_province">Province</string>
+
+    <string name="message_select_education">Please select education</string>
+    <string name="message_select_date_of_birth">Please select date of birth</string>
+    <string name="message_required">Required*</string>
+    <string name="message_input_account_no">Input should be at least 8 Characters</string>
+    <string name="message_input_not_empty">Input must be not empty</string>
+    <string name="message_select">Select the option</string>
+    <string name="message_empty">Please check your input, Input must be not empty</string>
+
+    <string name="input_id_card">Input must be exactly 16 characters</string>
+
 
     <string name="text_id_card">National ID :  %s</string>
     <string name="text_fullname">Full Name :  %s</string>
@@ -40,4 +47,9 @@
     <string name="text_dob">Date of Birth :  %s</string>
     <string name="text_home_type">Home Type :  %s</string>
     <string name="text_address">Address :  %s</string>
+    <string name="title_warning">WARNING</string>
+    <string name="desc_warning_save_data">Are you sure your data is correct?</string>
+    <string name="btn_cancel">cancel</string>
+    <string name="btn_yes">yes</string>
+    <string name="message_success_save">Success Submit Data</string>
 </resources>

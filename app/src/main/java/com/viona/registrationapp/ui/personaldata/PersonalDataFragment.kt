@@ -2,16 +2,14 @@ package com.viona.registrationapp.ui.personaldata
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputFilter
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.viona.registrationapp.R
 import com.viona.registrationapp.core.domain.model.param.RegisterParam
@@ -20,6 +18,7 @@ import com.viona.registrationapp.databinding.FragmentPersonalDataBinding
 import com.viona.registrationapp.util.Constants.EXTRA_REGISTER_PARAM
 import com.viona.registrationapp.util.Constants.FIX_LENGTH_ID_CARD
 import com.viona.registrationapp.util.Constants.MIN_LENGTH_BANK_ACCOUNT
+import com.viona.registrationapp.util.addAfterTextChangedListener
 import com.viona.registrationapp.util.showSnackbar
 import java.util.Calendar
 
@@ -49,51 +48,25 @@ class PersonalDataFragment : Fragment() {
     }
 
     private fun setupNationalID(isSubmit: Boolean? = false): Boolean {
-        var result = false
-        var message = ""
+        var result: Boolean
         binding.apply {
-            tilIdCard.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieIdCard.text?.trim()?.isEmpty() == true) {
-                tilIdCard.error = getString(R.string.message_input_not_empty)
-                message = getString(R.string.message_input_not_empty)
-            } else {
-                result = true
-            }
+            result = onSubmitData(tilIdCard, tieIdCard.text?.trim().toString(), isSubmit)
+            tieIdCard.addAfterTextChangedListener { text ->
+                when {
+                    text.isNullOrEmpty() -> {
+                        tilIdCard.error = validationEmptyMessage
+                    }
 
-            tieIdCard.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
+                    text.length != FIX_LENGTH_ID_CARD -> {
+                        tilIdCard.error = getString(R.string.input_id_card)
+                    }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    when {
-                        s.isNullOrEmpty() -> {
-                            tilIdCard.error = getString(R.string.message_input_not_empty)
-                            message = getString(R.string.message_input_not_empty)
-                        }
-
-                        s.length != FIX_LENGTH_ID_CARD -> {
-                            tilIdCard.error = getString(R.string.input_id_card)
-                            message = getString(R.string.input_id_card)
-                        }
-
-                        else -> {
-                            message = ""
-                            tilIdCard.error = null
-                            result = true
-                        }
+                    else -> {
+                        tilIdCard.error = null
+                        result = true
                     }
                 }
-            })
-        }
-        if (isSubmit == true && message.isNotEmpty()) {
-            view?.showSnackbar(message)
+            }
         }
 
         return result
@@ -106,32 +79,16 @@ class PersonalDataFragment : Fragment() {
                 source.filter { !it.isDigit() }
             }
             tieFullname.filters = arrayOf(inputFilter)
-            tilFullname.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieFullname.text?.trim()?.isEmpty() == true) {
-                tilFullname.error = getString(R.string.message_input_not_empty)
-            } else {
-                result = true
-            }
-            tieFullname.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilFullname.error = getString(R.string.message_input_not_empty)
-                    } else {
-                        tilFullname.error = null
-                        result = true
-                    }
+            result = onSubmitData(tilFullname, tieFullname.text?.trim().toString(), isSubmit)
+            tieFullname.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilFullname.error = getString(R.string.message_input_not_empty)
+                } else {
+                    tilFullname.error = null
+                    result = true
                 }
-            })
+            }
         }
         return result
     }
@@ -139,101 +96,62 @@ class PersonalDataFragment : Fragment() {
     private fun setupBankAccountNo(isSubmit: Boolean? = false): Boolean {
         var result: Boolean
         binding.apply {
-            tilBankAccount.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieAccountNo.text?.trim()?.isEmpty() == true) {
-                tilBankAccount.error = getString(R.string.message_input_not_empty)
-                result = false
-            } else {
-                result = true
-            }
-            tieAccountNo.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
+            result = onSubmitData(tilBankAccount, tieAccountNo.text?.trim().toString(), isSubmit)
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
+            tieAccountNo.addAfterTextChangedListener { text ->
+                when {
+                    text.isNullOrEmpty() -> {
+                        tilBankAccount.error = validationEmptyMessage
+                    }
 
-                override fun afterTextChanged(s: Editable?) {
-                    when {
-                        s.isNullOrEmpty() -> {
-                            tilBankAccount.error = getString(R.string.message_input_not_empty)
-                        }
+                    text.length < MIN_LENGTH_BANK_ACCOUNT -> {
+                        tilBankAccount.error = getString(R.string.message_input_account_no)
+                    }
 
-                        s.length < MIN_LENGTH_BANK_ACCOUNT -> {
-                            tilBankAccount.error = "Input should be at least 8 Characters"
-                        }
-
-                        else -> {
-                            tilBankAccount.error = null
-                            result = true
-                        }
+                    else -> {
+                        tilBankAccount.error = null
+                        result = true
                     }
                 }
-            })
+            }
         }
         return result
     }
 
     private fun setupEducation(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
         binding.apply {
-            tilEducation.helperText = getString(R.string.message_required)
-            if (isSubmit == true && actEducation.text?.trim()?.isEmpty() == true) {
-                tilEducation.error = getString(R.string.message_select)
-            } else {
-                result = true
-            }
-
-            val adapter = context?.let {
-                ArrayAdapter(
-                    it,
-                    androidx.transition.R.layout.support_simple_spinner_dropdown_item,
-                    EducationType.educationValues,
-                )
-            }
-            actEducation.setAdapter(adapter)
-            tilEducation.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
-
-            actEducation.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilEducation.error = getString(R.string.message_select)
-                        result = false
-                    } else {
-                        tilEducation.error = null
-                        result = true
-                    }
+            result = onSubmitData(tilEducation, actEducation.text?.trim().toString(), isSubmit)
+            actEducation.setOnClickListener {
+                context?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle(getString(R.string.desc_education))
+                        .setItems(EducationType.educationValues) { _, which ->
+                            actEducation.setText(EducationType.educationValues[which])
+                        }
+                        .show()
                 }
-            })
+            }
+            tilEducation.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
+            actEducation.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilEducation.error = getString(R.string.message_select)
+                    result = false
+                } else {
+                    tilEducation.error = null
+                    result = true
+                }
+            }
         }
 
         return result
     }
 
     private fun setupDateOfBirth(isSubmit: Boolean? = false): Boolean {
-        var result = false
+        var result: Boolean
 
         binding.apply {
-            tilDob.helperText = getString(R.string.message_required)
-            if (isSubmit == true && tieDob.text?.trim()?.isEmpty() == true) {
-                tilDob.error = getString(R.string.message_input_not_empty)
-            } else {
-                result = true
-            }
+            result = onSubmitData(tilDob, tieDob.text?.trim().toString(), isSubmit)
             val calendar = Calendar.getInstance()
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val month = calendar.get(Calendar.MONTH)
@@ -250,27 +168,15 @@ class PersonalDataFragment : Fragment() {
                 )
                 picker.show()
             }
-            tieDob.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) = Unit
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
-                    Unit
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (s.isNullOrEmpty()) {
-                        tilDob.error = getString(R.string.message_input_not_empty)
-                        result = false
-                    } else {
-                        tilDob.error = null
-                        result = true
-                    }
+            tieDob.addAfterTextChangedListener { text ->
+                if (text.isNullOrEmpty()) {
+                    tilDob.error = validationEmptyMessage
+                    result = false
+                } else {
+                    tilDob.error = null
+                    result = true
                 }
-            })
+            }
         }
 
         return result
@@ -310,4 +216,23 @@ class PersonalDataFragment : Fragment() {
             }
         }
     }
+
+    private fun onSubmitData(
+        layout: TextInputLayout,
+        text: String,
+        isSubmit: Boolean?,
+    ): Boolean {
+        val result: Boolean
+        layout.helperText = getString(R.string.message_required)
+        if (isSubmit == true && text.isEmpty()) {
+            layout.error = validationEmptyMessage
+            view?.showSnackbar(getString(R.string.message_empty))
+            result = false
+        } else {
+            result = true
+        }
+        return result
+    }
+
+    private val validationEmptyMessage get(): String = getString(R.string.message_input_not_empty)
 }
