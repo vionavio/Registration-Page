@@ -58,5 +58,3 @@ fun <T> LiveData<T>.observableData(
     }
 }
 
-fun Boolean?.orFalse() = this ?: false
-
