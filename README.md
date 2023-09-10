@@ -56,7 +56,7 @@ and then setup your *local.properties* like this
 <img width="374" alt="image" src="https://github.com/vionavio/Registration-Page/assets/62820688/44f86105-a835-4ba1-99c6-974096ed0e9f">
 
 ## APK Sample
-You can download the app here [Register App](https://drive.google.com/file/d/1TixO-nqiR-YeiDL5mPy6SgAASog8nOCE/view?usp=sharing)
+You can download the app here [Register App](https://drive.google.com/file/d/1XqEGRHI48S8ZNfTDfy2U1wwF3XFnjmTZ/view?usp=sharing)
 
 ## Contributors
 
