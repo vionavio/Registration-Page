@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.lifecycle)
     implementation(libs.lifecycleLiveData)
     implementation(libs.dagger)
+    implementation(libs.androidx.fragment.testing)
     kapt(libs.daggerCompiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
@@ -61,6 +62,9 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.testRules)
+    androidTestImplementation(libs.testRunner)
+
 }
 
 
